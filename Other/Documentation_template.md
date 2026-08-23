@@ -26,4 +26,3 @@
 [Where might you see this problem or similar concepts in real applications?]
 
 
-
