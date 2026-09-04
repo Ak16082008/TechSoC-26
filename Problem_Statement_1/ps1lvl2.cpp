@@ -2,9 +2,10 @@
 #include <vector>
 #include <climits>
 #include <utility>
+
 using namespace std;
 
-
+void feature2(vector<vector<char>> grid,int R ,int C,int G);
 void boundingbox(vector<vector<char>> v,int R ,int C);
 void com(vector<vector<char>> v,int R ,int C);
 
@@ -17,7 +18,23 @@ vector<vector<char>> nextgrid(vector<vector<char>> grid,string mode);
 pair<vector<vector<char>>,int> gen(vector<vector<char>> grid,int G,string mode);
 void output(vector<vector<char>> grid, int R, int C, int G,string mode);
 vector<pair<int,int>> liveloc(vector<vector<char>> v, int R, int C);
-
+bool same2dvector(vector<vector<char>> a,vector<vector<char>> b){
+    int r1=a.size();
+    int c1=a[0].size();
+   int r2=b.size();
+    int c2=b[0].size();
+    if(r1!=r2||c1!=c2){return false;}
+    else{
+    for(int i=0; i<r1;i++){
+        for(int j=0; j<c1;j++){
+        if(a[i][j]!=b[i][j]){
+        return false;
+       }
+    }
+    }
+    return true;
+}
+}
 
 
 vector<vector<char>> copyvector(vector<vector<char>> v){
@@ -148,13 +165,13 @@ pair<vector<vector<char>>,int> gen(vector<vector<char>> grid,int G,string mode){
    int c=grid[0].size();
    int maxpopulation=population(grid);
    vector<vector<char>> v;
-   vector<char> hash;
+  
     
    //vec2dinarr(grid,r,c);
    if(G!=0){
         for(int i=0;i<G;i++){
             v=nextgrid(grid,mode);
-           g1.push_back(v);
+          
            
             maxpopulation=max(population(v),maxpopulation);
             
@@ -185,16 +202,11 @@ if(mode=="toroidal"){
 }
 
 else if(mode=="classify"){
-
-
-    cout<<"mode: classify"<<endl;
-    cout<<"Final Population: "<<fpop<<endl;
-    cout<<"Final Grid: "<<endl;
-    printvector2d(finalgrid,R,C); 
+    
+   feature2(grid,R,C,G);
+   
 }
  else if(mode=="metrics"){
-  
-    
  }
  else{}
 }
@@ -261,23 +273,53 @@ void feature2(vector<vector<char>> grid,int R ,int C,int G){
     vector<vector<char>> v;
     string mode="classify";
     hash.push_back(grid);
+    vector<vector<char>> dead(R, vector<char>(C,'.'));
   for(int i=0;i<G;i++){
             v=nextgrid(grid,mode);
-            g1.push_back(v);
+            hash.push_back(v);
             grid=copyvector(v);
             }
-for(int i=0;i<=G;i++){
-    for(int j=0;j<G;j++){
-      if(hash[i]==hash[j]&&i!=j){
-        if(j=i+1 ){
-            cout <<"still life";
+int period;
+int a;
+int b;
+for(int i=0;i<G;i++){
+    for(int j=i+1;j<=G;j++){
+           
+    if(same2dvector(hash[i],dead)==true){
+             cout<<"Classification: Extinct"<<endl;
+             cout<<"Extinction Step: "<<i<<endl;
+             cout<< "Final Population: "<<population(hash[G])<<endl;
+             return;
         }
-      }
+    else if(same2dvector(hash[i],hash[j])==true){
+        a=i;
+        b=j;
+        period=j-i;    
+        if(period==1){
+          cout<<"  Classification: Still Life"<<endl;
+          cout<<"Stable at Step: "<<i<<endl;
+          cout<<"Period: 1"<<endl;
+          cout<<"Final Population: "<<population(hash[G]) <<endl;
+          return ;}
+          
+        else{
+            cout<<"Classification: Oscillator"<<endl;
+          cout<<"First Repeat Step: "<<j<<"(matches Step "<<i<<" )"<<endl;
+          cout<<"Period: "<<period<<endl;
+          cout<<"Final Population: "<<population(hash[G]) <<endl;
+          return;
+        }
+
     }
+    }
+    }
+      
+            cout<<"Classification: Active"<<endl;
+             cout<<"Final Population: "<<population(hash[G]) <<endl;
 }
 
 
-}
+
 int main(){
 string mode;
 cin>>mode;
