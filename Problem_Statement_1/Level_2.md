@@ -73,22 +73,22 @@ neighbor_col = (c + dc + C) % C
 **Input:**
 ```
 toroidal
-3 3
+3 5
 1
-#.#
-...
-...
+.....
+##..#
+.....
 ```
 
 **Output:**
 ```
 Mode: Toroidal
-Initial Population: 2
+Initial Population: 3
 Final Population: 3
 Final Grid:
-#..
-#..
-#..
+#....
+#....
+#....
 ```
 </details>
 
@@ -113,7 +113,7 @@ toroidal
 ```
 Mode: Toroidal
 Initial Population: 5
-Final Population: 5
+Final Population: 4
 Final Grid:
 #...
 .#.#
@@ -286,7 +286,7 @@ Final Population: 3
 For a given grid with $N$ live cells located at coordinates $(r_1, c_1), (r_2, c_2), \dots, (r_N, c_N)$:
 - **Bounding Box:** $H = (r_{max} - r_{min} + 1)$, $W = (c_{max} - c_{min} + 1)$
 - **Center of Mass:** $(\bar{r}, \bar{c}) = \left(\frac{\sum r_i}{N}, \frac{\sum c_i}{N}\right)$ rounded to 2 decimal places.
-- If $N = 0$, print `No live cells`.
+- If $N = 0$, print `Live Cells: 0`, `Bounding Box: 0 x 0`, and `Center of Mass: N/A` (see Test Case 2 below).
 
 <details>
 <summary><strong>🧪 Test Case 1: Glider Metrics</strong></summary>
@@ -308,7 +308,7 @@ metrics
 ```
 Live Cells: 5
 Bounding Box: 3 x 3 (Rows 0-2, Cols 0-2)
-Center of Mass: (1.40, 1.00)
+Center of Mass: (1.40, 1.20)
 ```
 </details>
 
